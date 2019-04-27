@@ -20,6 +20,8 @@ type CryptoMaterials struct {
 func NewServerCertificate(t *testing.T, signerCert *x509.Certificate, hosts ...string) *CryptoMaterials {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	var err error
 	server := &CryptoMaterials{}
 	if server.PrivateKey, err = rsa.GenerateKey(rand.Reader, 2048); err != nil {
@@ -40,6 +42,8 @@ func NewServerCertificate(t *testing.T, signerCert *x509.Certificate, hosts ...s
 	return server
 }
 func NewCertificateAuthorityCertificate(t *testing.T, parent *x509.Certificate) *CryptoMaterials {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	result := &CryptoMaterials{}

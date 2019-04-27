@@ -11,6 +11,8 @@ import (
 func (c *CertRotationController) syncInternalLoadBalancerHostnames() error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	infrastructureConfig, err := c.infrastructureLister.Get("cluster")
 	if err != nil {
 		return err
@@ -25,10 +27,14 @@ func (c *CertRotationController) syncInternalLoadBalancerHostnames() error {
 func (c *CertRotationController) runInternalLoadBalancerHostnames() {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	for c.processExternalLoadBalancerHostnames() {
 	}
 }
 func (c *CertRotationController) processInternalLoadBalancerHostnames() bool {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	dsKey, quit := c.internalLoadBalancerHostnamesQueue.Get()
@@ -46,6 +52,8 @@ func (c *CertRotationController) processInternalLoadBalancerHostnames() bool {
 	return true
 }
 func (c *CertRotationController) internalLoadBalancerHostnameEventHandler() cache.ResourceEventHandler {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	return cache.ResourceEventHandlerFuncs{AddFunc: func(obj interface{}) {

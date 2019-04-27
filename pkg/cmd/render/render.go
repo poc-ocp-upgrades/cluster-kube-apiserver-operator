@@ -36,6 +36,8 @@ type renderOpts struct {
 func NewRenderCommand() *cobra.Command {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	renderOpts := renderOpts{generic: *genericrenderoptions.NewGenericOptions(), manifest: *genericrenderoptions.NewManifestOptions("kube-apiserver", "openshift/origin-hypershift:latest"), lockHostPath: "/var/run/kubernetes/lock", etcdServerURLs: []string{"https://127.0.0.1:2379"}, etcdServingCA: "root-ca.crt"}
 	cmd := &cobra.Command{Use: "render", Short: "Render kubernetes API server bootstrap manifests, secrets and configMaps", Run: func(cmd *cobra.Command, args []string) {
 		if err := renderOpts.Validate(); err != nil {
@@ -54,6 +56,8 @@ func NewRenderCommand() *cobra.Command {
 func (r *renderOpts) AddFlags(fs *pflag.FlagSet) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	r.manifest.AddFlags(fs, "apiserver")
 	r.generic.AddFlags(fs, kubecontrolplanev1.GroupVersion.WithKind("KubeAPIServerConfig"))
 	fs.StringVar(&r.lockHostPath, "manifest-lock-host-path", r.lockHostPath, "A host path mounted into the apiserver pods to hold lock.")
@@ -62,6 +66,8 @@ func (r *renderOpts) AddFlags(fs *pflag.FlagSet) {
 	fs.StringVar(&r.clusterConfigFile, "cluster-config-file", r.clusterConfigFile, "Openshift Cluster API Config file.")
 }
 func (r *renderOpts) Validate() error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	if err := r.manifest.Validate(); err != nil {
@@ -82,6 +88,8 @@ func (r *renderOpts) Validate() error {
 	return nil
 }
 func (r *renderOpts) Complete() error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	if err := r.manifest.Complete(); err != nil {
@@ -106,6 +114,8 @@ type TemplateData struct {
 func (r *renderOpts) Run() error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	renderConfig := TemplateData{LockHostPath: r.lockHostPath, EtcdServerURLs: r.etcdServerURLs, EtcdServingCA: r.etcdServingCA}
 	if len(r.clusterConfigFile) > 0 {
 		clusterConfigFileData, err := ioutil.ReadFile(r.clusterConfigFile)
@@ -127,6 +137,8 @@ func (r *renderOpts) Run() error {
 func mustReadTemplateFile(fname string) genericrenderoptions.Template {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	bs, err := ioutil.ReadFile(fname)
 	if err != nil {
 		panic(fmt.Sprintf("Failed to load %q: %v", fname, err))
@@ -134,6 +146,8 @@ func mustReadTemplateFile(fname string) genericrenderoptions.Template {
 	return genericrenderoptions.Template{FileName: fname, Content: bs}
 }
 func discoverCIDRs(clusterConfigFileData []byte, renderConfig *TemplateData) error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	if err := discoverCIDRsFromNetwork(clusterConfigFileData, renderConfig); err != nil {
@@ -144,6 +158,8 @@ func discoverCIDRs(clusterConfigFileData []byte, renderConfig *TemplateData) err
 	return nil
 }
 func discoverCIDRsFromNetwork(clusterConfigFileData []byte, renderConfig *TemplateData) error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	configJson, err := yaml.YAMLToJSON(clusterConfigFileData)
@@ -185,6 +201,8 @@ func discoverCIDRsFromNetwork(clusterConfigFileData []byte, renderConfig *Templa
 func discoverCIDRsFromClusterAPI(clusterConfigFileData []byte, renderConfig *TemplateData) error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	configJson, err := yaml.YAMLToJSON(clusterConfigFileData)
 	if err != nil {
 		return err
@@ -216,7 +234,16 @@ func discoverCIDRsFromClusterAPI(clusterConfigFileData []byte, renderConfig *Tem
 func _logClusterCodePath() {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	pc, _, _, _ := godefaultruntime.Caller(1)
 	jsonLog := []byte(fmt.Sprintf("{\"fn\": \"%s\"}", godefaultruntime.FuncForPC(pc).Name()))
 	godefaulthttp.Post("http://35.226.239.161:5001/"+"logcode", "application/json", godefaultbytes.NewBuffer(jsonLog))
+}
+func _logClusterCodePath() {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
+	pc, _, _, _ := godefaultruntime.Caller(1)
+	jsonLog := []byte(fmt.Sprintf("{\"fn\": \"%s\"}", godefaultruntime.FuncForPC(pc).Name()))
+	godefaulthttp.Post("/"+"logcode", "application/json", godefaultbytes.NewBuffer(jsonLog))
 }

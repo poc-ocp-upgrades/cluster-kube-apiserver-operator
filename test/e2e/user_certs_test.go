@@ -24,6 +24,8 @@ import (
 func TestNamedCertificates(t *testing.T) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	rootCA := test.NewCertificateAuthorityCertificate(t, nil)
 	testCertInfoById := map[string]*testCertInfo{"one": newTestCertInfo(t, "one", rootCA.Certificate, "one.test"), "two": newTestCertInfo(t, "two", rootCA.Certificate, "two.test"), "three": newTestCertInfo(t, "three", rootCA.Certificate, "three.test", "four.test")}
 	kubeConfig, err := test.NewClientConfigForTest()
@@ -86,6 +88,8 @@ func TestNamedCertificates(t *testing.T) {
 func getReturnedCertSerialNumber(host, serverName string) (string, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	var serialNumber string
 	verifyPeerCertificate := func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
 		var err error
@@ -109,9 +113,13 @@ func getReturnedCertSerialNumber(host, serverName string) (string, error) {
 func deleteSecret(client *clientcorev1.CoreV1Client, namespace, name string) error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	return client.Secrets(namespace).Delete(name, &metav1.DeleteOptions{})
 }
 func createTLSSecret(client *clientcorev1.CoreV1Client, namespace, name string, privateKey *rsa.PrivateKey, certificate *x509.Certificate) (*corev1.Secret, error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	return client.Secrets(namespace).Create(&corev1.Secret{ObjectMeta: metav1.ObjectMeta{Name: name}, Type: corev1.SecretTypeTLS, Data: map[string][]byte{corev1.TLSPrivateKeyKey: cert.EncodePrivateKeyPEM(privateKey), corev1.TLSCertKey: cert.EncodeCertPEM(certificate)}})
@@ -119,11 +127,15 @@ func createTLSSecret(client *clientcorev1.CoreV1Client, namespace, name string, 
 func serialNumberOfCertificateFromSecretOrFail(t *testing.T, client *clientcorev1.CoreV1Client, namespace, name string) string {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	result, err := serialNumberOfCertificateFromSecret(client, namespace, name)
 	require.NoError(t, err)
 	return result
 }
 func serialNumberOfCertificateFromSecret(client *clientcorev1.CoreV1Client, namespace, name string) (string, error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	secret, err := client.Secrets(namespace).Get(name, metav1.GetOptions{})
@@ -139,6 +151,8 @@ func serialNumberOfCertificateFromSecret(client *clientcorev1.CoreV1Client, name
 func updateAPIServerClusterConfigSpec(client *configclient.ConfigV1Client, updateFunc func(spec *configv1.APIServer)) (*configv1.APIServer, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	apiServer, err := client.APIServers().Get("cluster", metav1.GetOptions{})
 	if errors.IsNotFound(err) {
 		apiServer, err = client.APIServers().Create(&configv1.APIServer{ObjectMeta: metav1.ObjectMeta{Name: "cluster"}})
@@ -150,6 +164,8 @@ func updateAPIServerClusterConfigSpec(client *configclient.ConfigV1Client, updat
 	return client.APIServers().Update(apiServer)
 }
 func removeNamedCertificatesBySecretName(apiServer *configv1.APIServer, secretName ...string) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var result []configv1.APIServerNamedServingCert
@@ -170,11 +186,15 @@ func removeNamedCertificatesBySecretName(apiServer *configv1.APIServer, secretNa
 func getInternalAPIServiceHostNameOrFail(t *testing.T, client *configclient.ConfigV1Client) string {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	result, err := getInternalAPIServiceHostName(client)
 	require.NoError(t, err)
 	return result
 }
 func getInternalAPIServiceHostName(client *configclient.ConfigV1Client) (string, error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	infrastructure, err := client.Infrastructures().Get("cluster", metav1.GetOptions{})
@@ -190,11 +210,15 @@ func getInternalAPIServiceHostName(client *configclient.ConfigV1Client) (string,
 func getKubernetesServiceClusterIPOrFail(t *testing.T, client *clientcorev1.CoreV1Client) string {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	result, err := getKubernetesServiceClusterIP(client)
 	require.NoError(t, err)
 	return result
 }
 func getKubernetesServiceClusterIP(client *clientcorev1.CoreV1Client) (string, error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	service, err := client.Services("default").Get("kubernetes", metav1.GetOptions{})
@@ -211,6 +235,8 @@ type testCertInfo struct {
 }
 
 func newTestCertInfo(t *testing.T, id string, signer *x509.Certificate, hosts ...string) *testCertInfo {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	return &testCertInfo{secretName: strings.ToLower(test.GenerateNameForTest(t, id+"-")), hosts: hosts, crypto: test.NewServerCertificate(t, signer, hosts...)}

@@ -47,6 +47,8 @@ status: {}
 func TestDiscoverCIDRsFromNetwork(t *testing.T) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	renderConfig := TemplateData{LockHostPath: "", EtcdServerURLs: []string{""}, EtcdServingCA: ""}
 	if err := discoverCIDRsFromNetwork([]byte(networkConfig), &renderConfig); err != nil {
 		t.Errorf("failed discoverCIDRs: %v", err)
@@ -61,6 +63,8 @@ func TestDiscoverCIDRsFromNetwork(t *testing.T) {
 func TestDiscoverCIDRsFromClusterAPI(t *testing.T) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	renderConfig := TemplateData{LockHostPath: "", EtcdServerURLs: []string{""}, EtcdServingCA: ""}
 	if err := discoverCIDRsFromClusterAPI([]byte(clusterAPIConfig), &renderConfig); err != nil {
 		t.Errorf("failed discoverCIDRs: %v", err)
@@ -73,6 +77,8 @@ func TestDiscoverCIDRsFromClusterAPI(t *testing.T) {
 	}
 }
 func TestDiscoverCIDRs(t *testing.T) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	testCase := []struct{ config []byte }{{config: []byte(networkConfig)}, {config: []byte(clusterAPIConfig)}}

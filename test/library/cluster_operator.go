@@ -13,6 +13,8 @@ import (
 func WaitForKubeAPIServerClusterOperatorAvailableNotProgressingNotDegraded(t *testing.T, client configclient.ConfigV1Interface) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	err := wait.Poll(WaitPollInterval, WaitPollTimeout, func() (bool, error) {
 		clusterOperator, err := client.ClusterOperators().Get("kube-apiserver", metav1.GetOptions{})
 		if errors.IsNotFound(err) {

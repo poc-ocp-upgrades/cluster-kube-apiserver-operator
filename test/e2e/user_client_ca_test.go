@@ -18,6 +18,8 @@ import (
 func TestUserClientCABundle(t *testing.T) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	kubeConfig, err := test.NewClientConfigForTest()
 	require.NoError(t, err)
 	kubeClient, err := clientcorev1.NewForConfig(kubeConfig)

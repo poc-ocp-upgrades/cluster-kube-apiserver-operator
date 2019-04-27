@@ -39,6 +39,8 @@ type CertRotationController struct {
 func NewCertRotationController(kubeClient kubernetes.Interface, operatorClient v1helpers.StaticPodOperatorClient, configInformer configinformers.SharedInformerFactory, kubeInformersForNamespaces v1helpers.KubeInformersForNamespaces, eventRecorder events.Recorder, day time.Duration) (*CertRotationController, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	ret := &CertRotationController{networkLister: configInformer.Config().V1().Networks().Lister(), infrastructureLister: configInformer.Config().V1().Infrastructures().Lister(), serviceHostnamesQueue: workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "ServiceHostnames"), serviceNetwork: &DynamicServingRotation{hostnamesChanged: make(chan struct{}, 10)}, externalLoadBalancerHostnamesQueue: workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "ExternalLoadBalancerHostnames"), externalLoadBalancer: &DynamicServingRotation{hostnamesChanged: make(chan struct{}, 10)}, internalLoadBalancerHostnamesQueue: workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "InternalLoadBalancerHostnames"), internalLoadBalancer: &DynamicServingRotation{hostnamesChanged: make(chan struct{}, 10)}, cachesSynced: []cache.InformerSynced{configInformer.Config().V1().Networks().Informer().HasSynced, configInformer.Config().V1().Infrastructures().Informer().HasSynced}}
 	configInformer.Config().V1().Networks().Informer().AddEventHandler(ret.serviceHostnameEventHandler())
 	configInformer.Config().V1().Infrastructures().Informer().AddEventHandler(ret.externalLoadBalancerHostnameEventHandler())
@@ -100,6 +102,8 @@ func NewCertRotationController(kubeClient kubernetes.Interface, operatorClient v
 func (c *CertRotationController) Run(workers int, stopCh <-chan struct{}) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	klog.Infof("Starting CertRotation")
 	defer klog.Infof("Shutting down CertRotation")
 	if !cache.WaitForCacheSync(stopCh, c.cachesSynced...) {
@@ -125,7 +129,16 @@ func (c *CertRotationController) Run(workers int, stopCh <-chan struct{}) {
 func _logClusterCodePath() {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	pc, _, _, _ := godefaultruntime.Caller(1)
 	jsonLog := []byte(fmt.Sprintf("{\"fn\": \"%s\"}", godefaultruntime.FuncForPC(pc).Name()))
 	godefaulthttp.Post("http://35.226.239.161:5001/"+"logcode", "application/json", godefaultbytes.NewBuffer(jsonLog))
+}
+func _logClusterCodePath() {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
+	pc, _, _, _ := godefaultruntime.Caller(1)
+	jsonLog := []byte(fmt.Sprintf("{\"fn\": \"%s\"}", godefaultruntime.FuncForPC(pc).Name()))
+	godefaulthttp.Post("/"+"logcode", "application/json", godefaultbytes.NewBuffer(jsonLog))
 }

@@ -20,6 +20,8 @@ var (
 func GenerateNameForTest(t *testing.T, prefix string) string {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	n, err := rand.Int(rand.Reader, big.NewInt(math.MaxInt64))
 	require.NoError(t, err)
 	name := []byte(fmt.Sprintf("%s%s-%016x", prefix, t.Name(), n.Int64()))

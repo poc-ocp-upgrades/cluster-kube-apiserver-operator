@@ -15,6 +15,8 @@ import (
 func GetKubeAPIServerOperatorConfigGeneration(t *testing.T, operatorClient *operatorclient.OperatorV1Client) int64 {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	config, err := operatorClient.KubeAPIServers().Get("cluster", metav1.GetOptions{})
 	if errors.IsNotFound(err) {
 		return 0
@@ -25,6 +27,8 @@ func GetKubeAPIServerOperatorConfigGeneration(t *testing.T, operatorClient *oper
 	return config.Generation
 }
 func WaitForNextKubeAPIServerOperatorConfigGenerationToFinishProgressing(t *testing.T, client *operatorclient.OperatorV1Client, generation int64) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var lastTransitionTime metav1.Time

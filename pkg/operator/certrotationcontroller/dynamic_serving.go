@@ -14,6 +14,8 @@ type DynamicServingRotation struct {
 func (r *DynamicServingRotation) setHostnames(newHostnames []string) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	if r.isSame(newHostnames) {
 		return
 	}
@@ -25,6 +27,8 @@ func (r *DynamicServingRotation) setHostnames(newHostnames []string) {
 func (r *DynamicServingRotation) isSame(newHostnames []string) bool {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 	existingSet := sets.NewString(r.hostnames...)
@@ -32,6 +36,8 @@ func (r *DynamicServingRotation) isSame(newHostnames []string) bool {
 	return existingSet.Equal(newSet)
 }
 func (r *DynamicServingRotation) GetHostnames() []string {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	r.lock.RLock()

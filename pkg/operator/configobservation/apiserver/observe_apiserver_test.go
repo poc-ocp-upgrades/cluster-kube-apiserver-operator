@@ -20,6 +20,8 @@ import (
 func TestObserveUserClientCABundle(t *testing.T) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	testCases := []struct {
 		name		string
 		config		*configv1.APIServer
@@ -51,6 +53,8 @@ func TestObserveUserClientCABundle(t *testing.T) {
 	}
 }
 func TestObserveDefaultServingCertificate(t *testing.T) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	existingConfig := map[string]interface{}{"servingInfo": map[string]interface{}{"certFile": "/etc/kubernetes/static-pod-certs/secrets/existing/tls.key"}}
@@ -85,6 +89,8 @@ func TestObserveDefaultServingCertificate(t *testing.T) {
 	}
 }
 func TestObserveNamedCertificates(t *testing.T) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	existingConfig := map[string]interface{}{"servingInfo": map[string]interface{}{"namedCertificates": []interface{}{map[string]interface{}{"certFile": "/etc/kubernetes/static-pod-certs/secrets/existing/tls.crt", "keyFile": "/etc/kubernetes/static-pod-certs/secrets/existing/tls.key", "names": []interface{}{"existing"}}}}}
@@ -140,6 +146,8 @@ type mockResourceSyncer struct {
 func (rs *mockResourceSyncer) SyncConfigMap(destination, source resourcesynccontroller.ResourceLocation) error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	if (source == resourcesynccontroller.ResourceLocation{}) {
 		rs.synced[fmt.Sprintf("configmap/%v.%v", destination.Name, destination.Namespace)] = "DELETE"
 	} else {
@@ -148,6 +156,8 @@ func (rs *mockResourceSyncer) SyncConfigMap(destination, source resourcesynccont
 	return nil
 }
 func (rs *mockResourceSyncer) SyncSecret(destination, source resourcesynccontroller.ResourceLocation) error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	if (source == resourcesynccontroller.ResourceLocation{}) {
@@ -160,6 +170,8 @@ func (rs *mockResourceSyncer) SyncSecret(destination, source resourcesynccontrol
 func newAPIServerConfig(builders ...func(*configv1.APIServer)) *configv1.APIServer {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	config := &configv1.APIServer{ObjectMeta: metav1.ObjectMeta{Name: "cluster"}}
 	for _, builder := range builders {
 		builder(config)
@@ -167,6 +179,8 @@ func newAPIServerConfig(builders ...func(*configv1.APIServer)) *configv1.APIServ
 	return config
 }
 func withCertificate(builders ...func(*configv1.APIServerNamedServingCert)) func(*configv1.APIServer) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	return func(apiserver *configv1.APIServer) {
@@ -180,11 +194,15 @@ func withCertificate(builders ...func(*configv1.APIServerNamedServingCert)) func
 func withName(name string) func(*configv1.APIServerNamedServingCert) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	return func(cert *configv1.APIServerNamedServingCert) {
 		cert.Names = append(cert.Names, name)
 	}
 }
 func withSecret(name string) func(*configv1.APIServerNamedServingCert) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	return func(cert *configv1.APIServerNamedServingCert) {
@@ -194,11 +212,15 @@ func withSecret(name string) func(*configv1.APIServerNamedServingCert) {
 func withDefaultSecret(name string) func(*configv1.APIServer) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	return func(apiserver *configv1.APIServer) {
 		apiserver.Spec.ServingCerts.DefaultServingCertificate.Name = name
 	}
 }
 func withClientCA(name string) func(*configv1.APIServer) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	return func(apiserver *configv1.APIServer) {

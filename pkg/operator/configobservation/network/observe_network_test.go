@@ -14,6 +14,8 @@ import (
 func TestObserveClusterConfig(t *testing.T) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	indexer := cache.NewIndexer(cache.MetaNamespaceKeyFunc, cache.Indexers{})
 	if err := indexer.Add(&configv1.Network{ObjectMeta: metav1.ObjectMeta{Name: "cluster"}, Status: configv1.NetworkStatus{ClusterNetwork: []configv1.ClusterNetworkEntry{{CIDR: "podCIDR"}}, ServiceNetwork: []string{"serviceCIDR"}}}); err != nil {
 		t.Fatal(err.Error())

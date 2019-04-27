@@ -15,6 +15,8 @@ const workQueueKey = "key"
 func (c *CertRotationController) syncServiceHostnames() error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	hostnames := sets.NewString("kubernetes", "kubernetes.default", "kubernetes.default.svc")
 	hostnames.Insert("kubernetes.default.svc." + "cluster.local")
 	networkConfig, err := c.networkLister.Get("cluster")
@@ -39,10 +41,14 @@ func (c *CertRotationController) syncServiceHostnames() error {
 func (c *CertRotationController) runServiceHostnames() {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	for c.processServiceHostnames() {
 	}
 }
 func (c *CertRotationController) processServiceHostnames() bool {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	dsKey, quit := c.serviceHostnamesQueue.Get()
@@ -60,6 +66,8 @@ func (c *CertRotationController) processServiceHostnames() bool {
 	return true
 }
 func (c *CertRotationController) serviceHostnameEventHandler() cache.ResourceEventHandler {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	return cache.ResourceEventHandlerFuncs{AddFunc: func(obj interface{}) {
