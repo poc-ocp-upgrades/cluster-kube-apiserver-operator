@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	expectedClusterCIDR = []string{"10.128.0.0/14"}
-	expectedServiceCIDR = []string{"172.30.0.0/16"}
-	clusterAPIConfig    = `
+	expectedClusterCIDR	= []string{"10.128.0.0/14"}
+	expectedServiceCIDR	= []string{"172.30.0.0/16"}
+	clusterAPIConfig	= `
 apiVersion: machine.openshift.io/v1beta1
 kind: Cluster
 metadata:
@@ -27,7 +27,7 @@ spec:
   providerSpec: {}
 status: {}
 `
-	networkConfig = `
+	networkConfig	= `
 apiVersion: config.openshift.io/v1
 kind: Network
 metadata:
@@ -45,11 +45,9 @@ status: {}
 )
 
 func TestDiscoverCIDRsFromNetwork(t *testing.T) {
-	renderConfig := TemplateData{
-		LockHostPath:   "",
-		EtcdServerURLs: []string{""},
-		EtcdServingCA:  "",
-	}
+	_logClusterCodePath()
+	defer _logClusterCodePath()
+	renderConfig := TemplateData{LockHostPath: "", EtcdServerURLs: []string{""}, EtcdServingCA: ""}
 	if err := discoverCIDRsFromNetwork([]byte(networkConfig), &renderConfig); err != nil {
 		t.Errorf("failed discoverCIDRs: %v", err)
 	}
@@ -60,13 +58,10 @@ func TestDiscoverCIDRsFromNetwork(t *testing.T) {
 		t.Errorf("Got: %v, expected: %v", renderConfig.ServiceCIDR, expectedServiceCIDR)
 	}
 }
-
 func TestDiscoverCIDRsFromClusterAPI(t *testing.T) {
-	renderConfig := TemplateData{
-		LockHostPath:   "",
-		EtcdServerURLs: []string{""},
-		EtcdServingCA:  "",
-	}
+	_logClusterCodePath()
+	defer _logClusterCodePath()
+	renderConfig := TemplateData{LockHostPath: "", EtcdServerURLs: []string{""}, EtcdServingCA: ""}
 	if err := discoverCIDRsFromClusterAPI([]byte(clusterAPIConfig), &renderConfig); err != nil {
 		t.Errorf("failed discoverCIDRs: %v", err)
 	}
@@ -77,30 +72,15 @@ func TestDiscoverCIDRsFromClusterAPI(t *testing.T) {
 		t.Errorf("Got: %v, expected: %v", renderConfig.ServiceCIDR, expectedServiceCIDR)
 	}
 }
-
 func TestDiscoverCIDRs(t *testing.T) {
-	testCase := []struct {
-		config []byte
-	}{
-		{
-			config: []byte(networkConfig),
-		},
-		{
-			config: []byte(clusterAPIConfig),
-		},
-	}
-
+	_logClusterCodePath()
+	defer _logClusterCodePath()
+	testCase := []struct{ config []byte }{{config: []byte(networkConfig)}, {config: []byte(clusterAPIConfig)}}
 	for _, tc := range testCase {
-		renderConfig := TemplateData{
-			LockHostPath:   "",
-			EtcdServerURLs: []string{""},
-			EtcdServingCA:  "",
-		}
-
+		renderConfig := TemplateData{LockHostPath: "", EtcdServerURLs: []string{""}, EtcdServingCA: ""}
 		if err := discoverCIDRs(tc.config, &renderConfig); err != nil {
 			t.Errorf("failed to discoverCIDRs: %v", err)
 		}
-
 		if !reflect.DeepEqual(renderConfig.ClusterCIDR, expectedClusterCIDR) {
 			t.Errorf("Got: %v, expected: %v", renderConfig.ClusterCIDR, expectedClusterCIDR)
 		}
