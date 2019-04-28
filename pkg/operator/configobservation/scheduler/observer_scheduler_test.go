@@ -2,31 +2,24 @@ package scheduler
 
 import (
 	configv1 "github.com/openshift/api/config/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"testing"
-
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/client-go/tools/cache"
-
 	configlistersv1 "github.com/openshift/client-go/config/listers/config/v1"
 	"github.com/openshift/cluster-kube-apiserver-operator/pkg/operator/configobservation"
 	"github.com/openshift/library-go/pkg/operator/events"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/client-go/tools/cache"
+	"testing"
 )
 
 func TestObserveSchedulerConfig(t *testing.T) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	nodeSelector := "type=user-node,region=east"
 	indexer := cache.NewIndexer(cache.MetaNamespaceKeyFunc, cache.Indexers{})
-	if err := indexer.Add(&configv1.Scheduler{
-		ObjectMeta: metav1.ObjectMeta{Name: "cluster"},
-		Spec: configv1.SchedulerSpec{
-			DefaultNodeSelector: nodeSelector,
-		},
-	}); err != nil {
+	if err := indexer.Add(&configv1.Scheduler{ObjectMeta: metav1.ObjectMeta{Name: "cluster"}, Spec: configv1.SchedulerSpec{DefaultNodeSelector: nodeSelector}}); err != nil {
 		t.Fatal(err.Error())
 	}
-	listers := configobservation.Listers{
-		SchedulerLister: configlistersv1.NewSchedulerLister(indexer),
-	}
+	listers := configobservation.Listers{SchedulerLister: configlistersv1.NewSchedulerLister(indexer)}
 	result, errors := ObserveDefaultNodeSelector(listers, events.NewInMemoryRecorder("scheduler"), map[string]interface{}{})
 	if len(errors) > 0 {
 		t.Fatalf("expected len(errors) == 0")

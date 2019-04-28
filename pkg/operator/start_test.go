@@ -1,6 +1,10 @@
 package operator
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestNothing(t *testing.T) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 }
