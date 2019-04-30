@@ -1,22 +1,20 @@
 package library
 
 import (
-	"testing"
-	"time"
-
-	"github.com/stretchr/testify/require"
-
-	"k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/util/wait"
-
 	operatorv1 "github.com/openshift/api/operator/v1"
 	operatorclient "github.com/openshift/client-go/operator/clientset/versioned/typed/operator/v1"
 	operatorhelpers "github.com/openshift/library-go/pkg/operator/v1helpers"
+	"github.com/stretchr/testify/require"
+	"k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/wait"
+	"testing"
+	"time"
 )
 
-// GetKubeAPIServerOperatorConfigGeneration returns the current generation of the KubeApiServer/cluster resource.
 func GetKubeAPIServerOperatorConfigGeneration(t *testing.T, operatorClient *operatorclient.OperatorV1Client) int64 {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	config, err := operatorClient.KubeAPIServers().Get("cluster", metav1.GetOptions{})
 	if errors.IsNotFound(err) {
 		return 0
@@ -26,15 +24,10 @@ func GetKubeAPIServerOperatorConfigGeneration(t *testing.T, operatorClient *oper
 	}
 	return config.Generation
 }
-
-// WaitForNextKubeAPIServerOperatorConfigGenerationToFinishProgressing waits for a new KubeApiServer/cluster generation
-// to start and finish progressing.
 func WaitForNextKubeAPIServerOperatorConfigGenerationToFinishProgressing(t *testing.T, client *operatorclient.OperatorV1Client, generation int64) {
-
-	// the generation gets updated before the status does, so note the timestamp on the old Progressing status
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	var lastTransitionTime metav1.Time
-
-	// wait for Available=true and Progressing=false to stop
 	err := wait.Poll(WaitPollInterval, WaitPollTimeout, func() (bool, error) {
 		config, err := client.KubeAPIServers().Get("cluster", metav1.GetOptions{})
 		if err != nil {
